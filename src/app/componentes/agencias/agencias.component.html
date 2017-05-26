@@ -1,0 +1,102 @@
+<section class="">
+  <div class="blue">
+    <div class="wrapper">
+      <h2>Agencias Cercanas</h2>
+    </div>
+  </div>
+  <div class="mapblock">
+    <section id="giros-google-map">
+      <div style="height:350px;" id="google-container">
+        <sebm-google-map [latitude]="LatVista" [longitude]="LngVista" [zoom]="zoom" [disableDefaultUI]="false" [zoomControl]="false"
+          (mapClick)="mapClicked($event)">
+
+          <sebm-google-map-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)" [latitude]="m.lat"
+            [longitude]="m.lng" [label]="m.label" [markerDraggable]="m.draggable" (dragEnd)="markerDragEnd(m, $event)">
+            <div *ngIf="m.name">
+              <sebm-google-map-info-window>
+
+                <strong>{{m.name}}</strong><br/>
+                <b>Dirección: </b>{{m.direccion}}<br/>
+                <b>{{m.tipocontacto}}: </b>{{m.valorcontacto}}<br/>
+
+              </sebm-google-map-info-window>
+            </div>
+          </sebm-google-map-marker>
+
+        </sebm-google-map>
+      </div>
+    </section>
+  </div>
+  <div class="card agenblock">
+     <a class="btn btngris btnmapshow" (click)="ocultarMapa()">Mostrar/ocultar Mapa</a>
+    <div class="wrapper clearfix">
+     
+      <div class="tabs tabs-style-linemove">
+
+        <nav>
+          <ul>
+            <li class="tab1"><a (click)="tab1a()" class="icon icon-upload"><span>Agencias Cercanas</span></a></li>
+            <li class="tab2"><a (click)="tab2a()" class="icon icon-tools"><span>Buscar Agencias</span></a></li>
+          </ul>
+        </nav>
+        <div class="content-wrap">
+
+          <section *ngIf="tab1==true" id="section-linemove-4">
+            <div class="select">
+              <label>Distancia</label>
+              <span></span>
+              <div *ngIf="options.length > 0">
+                <ng-select (label)="5000" placeholder="Seleccione una opcion" [options]="options" [allowClear]="true" theme="default" (selected)="onSelectedDistancia($event)"
+                  [disabled]="disabled">
+                </ng-select>
+              </div>
+            </div>
+
+          </section>
+          <section *ngIf="tab2==true" id="section-linemove-5">
+            <div class="select">
+              <label>Pais</label>
+              <app-pais-select [lleno]="true" (paisUpdate)="paisUpdate($event)" [placeholder]="placeholderPais" [todos]="false"></app-pais-select>
+
+            </div>
+            <div class="select">
+              <label>Provincia</label>
+              <app-provincia-select [lleno]="true" (provinciaUpdate)="provinciaUpdate($event)" [placeholder]="placeholderProvincia" [Pais]="Pais" [todos]="false"></app-provincia-select>
+
+            </div>
+            <div class="select">
+              <label>Departamento</label>
+              <app-departamento-select [lleno]="true" (departamentoUpdate)="departamentoUpdate($event)" [placeholder]="placeholderDepartamento" [Provincia]="Provincia"
+                [todos]="false"></app-departamento-select>
+            </div>
+          </section>
+        </div>
+        <!-- /content -->
+      </div>
+      <!-- /tabs -->
+      <div class="  ">
+
+
+
+        <div class="">
+          <h2>Agencias</h2>
+          <div class="locitem" *ngFor="let item of Agencias; let i = index">
+            <a (click)="localizarPunto(item)">{{item.Nombre}}</a>
+            <div>
+              <span class="loctitulo">Dirección: </span><span>{{item.Direccion}}</span>
+            </div>
+            <div>
+              <span class="loctitulo">{{item.TipoContacto}}: </span><span>{{item.Telefono}} </span>
+            </div>
+            <div>
+              <span class="loctitulo">Tipo de Agencia: </span><span>{{item.TipoAgenciaDescrip}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+<app-spinner *ngIf="isRequesting"></app-spinner>

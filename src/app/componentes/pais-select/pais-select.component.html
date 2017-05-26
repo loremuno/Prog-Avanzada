@@ -1,0 +1,13 @@
+<div *ngIf="options.length > 0"> 
+    <ng-select [options]="options"
+           [placeholder]="placeholder"
+           [allowClear]="false"
+           theme="default"
+           (selected)="onSelected($event)"
+           required
+           [disabled]="disabled"
+           [ngClass]="{'selecterror':!lleno,'selectlleno':lleno}"
+           >
+    </ng-select>
+    <div class="campo_obligatorio" *ngIf="!lleno">Campo obligatorio</div>
+</div>
